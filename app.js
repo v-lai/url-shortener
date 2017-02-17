@@ -5,8 +5,9 @@ var mongoose = require("mongoose");
 // ES6 promise library, as mongoose's is deprecated
 mongoose.Promise = global.Promise;
 
-// mongoose connect to be changed
-mongoose.connect("mongodb://localhost/url_shortener");
+// mongoose connect
+// mongoose.connect("mongodb://localhost/url_shortener");
+mongoose.connect(process.env.DATABASEURL || "mongodb://localhost/url_shortener");
 
 // schema shown here for single file (may refactor later)
 var urlSchema = new mongoose.Schema({
@@ -17,8 +18,9 @@ var urlSchema = new mongoose.Schema({
 // compiling schema into a model
 var Url = mongoose.model("Url", urlSchema);
 
-// short URL prefix to be changed
-const SHORT_URL_PREFIX = "localhost:3000/";
+// short URL prefix
+// const SHORT_URL_PREFIX = "localhost:3000/";
+const SHORT_URL_PREFIX = "https://intense-woodland-54597.herokuapp.com/";
 
 // ROOT ROUTE - INDEX
 app.get("/", function(req, res){
@@ -44,11 +46,6 @@ app.get("/new/" + HTTP + ":longUrl/*", function(req, res){
 app.get("/new/" + HTTPS + ":longUrl/*", function(req, res){
   getUrl(req, res);
 });
-
-// CREATE ROUTES - add new URL to DB
-// app.post("/new/:longUrl", function(req, res){
-//   //setUrl(req, res);
-// });
 
 // SHOW ROUTE - reroutes shortened URL to long URL
 app.get("/:shortUrls", function(req, res){
